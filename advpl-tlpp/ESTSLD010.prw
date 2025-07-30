@@ -94,6 +94,8 @@ Processa({|| sfImpPR() }, "Aguarde...", OEMTOANSI("Processando Planilha para cri
 //Fecha o arquivo aberto
 fClose(nHdl)
 
+alert("Processo de importação finalizado com sucesso.", "Totvs")
+
 Return()
 
 
