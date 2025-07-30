@@ -20,7 +20,7 @@
 User Function ESTSLD010()
 
 Private cFile		:= GetNextAlias() 
-Private aPR	   		:= {}    
+Private aPR	   		:= {}    ==
 Private aLin 		:= {}
 Private nTotLin 	:= 0
 Private nTotSKU 	:= 0
@@ -90,6 +90,9 @@ If (nHdl == -1) .OR. (Alltrim(SubStr(targetDir, RAT(".", targetDir))) <> ".csv")
 Endif
 
 Processa({|| sfImpPR() }, "Aguarde...", OEMTOANSI("Processando Planilha para criação de lote e lançamento de saldos iniciais..."),.F.)
+
+//Fecha o arquivo aberto
+fClose(nHdl)
 
 Return()
 
