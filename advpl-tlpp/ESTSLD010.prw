@@ -97,6 +97,8 @@ fClose(nHdl)
 
 if lRet
     alert("Processo de importação finalizado com sucesso.", "Totvs")
+    alert("teste")
+    alert("teste")
 EndIf
 
 Return()
