@@ -71,6 +71,7 @@ Local cDirini   := "C:\"
 Local lSalvar   := .F. /*.T. = Salva || .F. = Abre*/
 Local nOpcoes   := GETF_LOCALHARD
 Local lArvore   := .F. /*.T. = apresenta o árvore do servidor || .F. = não apresenta*/
+Local lRet      := .T.
 
 Private targetDir := cGetFile( cMascara, cTitulo, nMascpad, cDirIni, lSalvar, nOpcoes, lArvore) //cGetFile(,"Importação para criação de lote e lançamento de saldos iniciais ",0,"\",.T., nOR( GETF_LOCALHARD, GETF_LOCALFLOPPY))
 Private cArqcsv := targetDir
@@ -89,12 +90,14 @@ If (nHdl == -1) .OR. (Alltrim(SubStr(targetDir, RAT(".", targetDir))) <> ".csv")
 	Return
 Endif
 
-Processa({|| sfImpPR() }, "Aguarde...", OEMTOANSI("Processando Planilha para criação de lote e lançamento de saldos iniciais..."),.F.)
+Processa({|| lRet:= sfImpPR() }, "Aguarde...", OEMTOANSI("Processando Planilha para criação de lote e lançamento de saldos iniciais..."),.F.)
 
 //Fecha o arquivo aberto
 fClose(nHdl)
 
-alert("Processo de importação finalizado com sucesso.", "Totvs")
+if lRet
+    alert("Processo de importação finalizado com sucesso.", "Totvs")
+EndIf
 
 Return()
 
@@ -121,7 +124,7 @@ Private aSldProd := {}
 
 If !File(cArqcsv)
 	MsgStop("O arquivo " +cArqcsv+" não foi encontrado. A importação será abortada!","[QG_ATF] - ATENCAO")
-	Return
+	Return(.F.)
 EndIf
 
 SD5->(DbSetOrder(2)) //D5_FILIAL+D5_PRODUTO+D5_LOCAL+D5_LOTECTL+D5_NUMLOTE+D5_NUMSEQ
@@ -154,15 +157,15 @@ While !FT_FEOF() //!FT_FEOF(cArqcsv)
 
 	If  Len(aDados[nY])  <> 8 
 		MsgStop("Impossível importar planilha, pois é Obrigatório que existam exatamente 8 (COD_PRODUTO, ARMAZEM, LOTE, QTD, DT_FABRIC, DT_VENCTO, TIPO_CONTROLE, ANOS) colunas de informações."+cEOL+"Favor, Corrija Planilha antes de Importa-la.")
-		Return() 
+		Return(.F.) 
 	EndIf
 	
 	//valida se existe qtd. negativA
 	If AT("-", Alltrim(aDados[nY,4]) ) == 1  
 		MsgStop("Impossível importar planilha com Quantidade negativa!"+cEOL+"Favor, Corrija Planilha antes de Importa-la.")
-		Return() 
+		Return(.F.) 
 	Elseif !sfVerEsp(Alltrim(aDados[nY,4]))
-		Return() 	
+		Return(.F.) 	
 	EndIf
 
     //verifica se data de validade está vazia.
@@ -197,7 +200,7 @@ While !FT_FEOF() //!FT_FEOF(cArqcsv)
 
     If SD5->(DbSeek(xFilial("SD5")+Padr(aDados[nY][1],TamSx3("D5_PRODUTO")[1])+Padr(aDados[nY][2],TamSx3("D5_LOCAL")[1])+Padr(aDados[nY][3],TamSx3("D5_LOTECTL")[1])))
         MsgStop("Não foi possível importar a planilha pois Lote "+aDados[nY][3]+" para o produto: "+aDados[nY][1]+" já existe!"+cEOL+"Favor, Corrija Planilha antes de Importa-la.")
-        Return()
+        Return(.F.)
     Endif
 
 	If !Empty(aDados[nY][1])
@@ -230,7 +233,7 @@ FT_FUSE()
 
 sfPRVerPla()
 
-Return()  
+Return(.T.)  
 
 /*/{Protheus.doc} nomeStaticFunction
     (long_description)
