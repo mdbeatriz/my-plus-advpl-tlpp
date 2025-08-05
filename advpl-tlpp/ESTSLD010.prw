@@ -100,6 +100,7 @@ if lRet
     alert("teste")
     alert("teste")
     alert("estou na branch issue-de-correcao-001")
+    alert("mais um teste")
 EndIf
 
 Return()
