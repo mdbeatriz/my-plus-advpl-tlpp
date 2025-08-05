@@ -97,12 +97,6 @@ fClose(nHdl)
 
 if lRet
     alert("Processo de importação finalizado com sucesso.", "Totvs")
-    alert("teste")
-    alert("teste")
-    alert("estou na branch issue-de-correcao-001")
-    alert("teste de merge estando na brach issue-teste-001")
-    alert("mais um teste")
-    alert("iniciei a branch issue-teste-002")
 EndIf
 
 Return()
