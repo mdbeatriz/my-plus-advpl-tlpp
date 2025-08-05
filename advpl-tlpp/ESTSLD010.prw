@@ -97,6 +97,7 @@ fClose(nHdl)
 
 if lRet
     FWAlertSuccess("Processo de importação finalizado com sucesso.", "Totvs")
+    alert("adicionando alert só para teste")
 EndIf
 
 Return()
