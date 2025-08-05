@@ -102,7 +102,6 @@ if lRet
     alert("estou na branch issue-de-correcao-001")
     alert("teste de merge estando na brach issue-teste-001")
     alert("mais um teste")
-    alert("iniciei a branch issue-teste-002")
 EndIf
 
 Return()
